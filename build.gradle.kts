@@ -62,6 +62,27 @@ gradlePlugin {
 val functionalTestRepo = layout.buildDirectory.dir("functional-test-repo")
 
 publishing {
+    publications.withType<MavenPublication>().configureEach {
+        pom {
+            name = "Upload to PGYER Gradle plugin"
+            description = project.description
+            url = "https://github.com/PGYER/pgyer-gradle-plugin"
+            licenses {
+                license {
+                    name = "MIT License"
+                    url = "https://opensource.org/license/mit"
+                }
+            }
+            organization {
+                name = "PGYER"
+                url = "https://www.pgyer.com"
+            }
+            scm {
+                url = "https://github.com/PGYER/pgyer-gradle-plugin"
+                connection = "scm:git:https://github.com/PGYER/pgyer-gradle-plugin.git"
+            }
+        }
+    }
     repositories {
         // The functional tests resolve the plugin from here, like a build would from the Plugin Portal.
         maven {

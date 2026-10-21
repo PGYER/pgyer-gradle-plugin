@@ -152,7 +152,13 @@ class PlainTaskFunctionalTest {
                 + "    installType = 'invite'\n"
                 + "    oversea = true\n"
                 + "    processingTimeout = 120\n"
+                + "    variants {\n"
+                + "        freeRelease { channelShortcut = 'free-beta' }\n"
+                + "        paidRelease { enabled = false }\n"
+                + "    }\n"
                 + "}\n"
+                + "println \"variants: ${pgyer.variants.collect { it.name + '=' + it.channelShortcut.getOrElse('-') + '/'"
+                + " + it.enabled.getOrElse(true) }}\"\n"
                 + "tasks.register('uploadIpa', com.pgyer.upload.PgyerUploadTask) {\n"
                 + "    file = layout.projectDirectory.file('MyApp.ipa')\n"
                 + "    updateDescription = 'Groovy'\n"
@@ -168,6 +174,8 @@ class PlainTaskFunctionalTest {
         assertEquals("Groovy", form.get("buildUpdateDescription"));
         assertFalse(form.containsKey("buildPassword"));
         assertEquals("MyApp.ipa", pgyer.uploads.get(0).fields.get("x-cos-meta-file-name"));
+        assertTrue(result.getOutput().contains("variants: [freeRelease=free-beta/true, paidRelease=-/false]"),
+                result.getOutput());
     }
 
     @Test

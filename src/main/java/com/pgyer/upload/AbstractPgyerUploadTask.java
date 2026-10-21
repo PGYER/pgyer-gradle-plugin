@@ -1,5 +1,6 @@
 package com.pgyer.upload;
 
+import com.pgyer.upload.client.Json;
 import com.pgyer.upload.client.PgyerClient;
 import com.pgyer.upload.client.PgyerLog;
 import com.pgyer.upload.client.UploadOptions;
@@ -182,7 +183,7 @@ public abstract class AbstractPgyerUploadTask extends DefaultTask {
         Path out = getResultFile().get().getAsFile().toPath();
         try {
             Files.createDirectories(out.getParent());
-            Files.writeString(out, com.pgyer.upload.client.Json.write(result.toJsonMap()), StandardCharsets.UTF_8);
+            Files.writeString(out, Json.write(result.toJsonMap()), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new GradleException("Could not write " + out + ": " + e.getMessage(), e);
         }

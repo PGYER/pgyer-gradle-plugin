@@ -3,6 +3,7 @@ package com.pgyer.upload;
 import com.pgyer.upload.internal.AndroidSupport;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.gradle.api.GradleException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.provider.Property;
@@ -38,9 +39,17 @@ public abstract class PgyerUploadPlugin implements Plugin<Project> {
             connect(task.getDownloadFileName(), v == null ? null : v.getDownloadFileName(), e.getDownloadFileName());
         });
 
-        project.getPluginManager().withPlugin("com.android.application", applied ->
-                AndroidSupport.register(project, extension, v -> extension.getVariantFilter().isSatisfiedBy(v),
-                        variantSettings));
+        project.getPluginManager().withPlugin("com.android.application", applied -> {
+            try {
+                AndroidSupport.register(
+                        project, extension, v -> extension.getVariantFilter().isSatisfiedBy(v), variantSettings);
+            } catch (NoClassDefFoundError e) {
+                throw new GradleException("The com.pgyer.upload plugin cannot see the classes of the Android Gradle"
+                        + " Plugin (" + e.getMessage() + "). Declare com.pgyer.upload in the same build script as"
+                        + " com.android.application, for example both in the root build.gradle(.kts) with"
+                        + " 'apply false', or in the app's own plugins block.", e);
+            }
+        });
     }
 
     /** Makes the variant setting, then the extension setting, the task property's convention. */
