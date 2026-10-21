@@ -15,16 +15,13 @@ The plugin declares that it supports the configuration cache. The descriptor car
 `compatibility.feature.configuration-cache=DECLARED_SUPPORTED`. Once a version declares a feature,
 later versions must keep declaring it.
 
-## 1. Before the first publish: make the repository public
+## 1. Before the first publish: a public repository
 
 Reviewers open the `website` and `vcsUrl` links (both point to
 `https://github.com/PGYER/pgyer-gradle-plugin`) and reject a plugin whose links are broken or
-private, or whose README is empty or not in English. As of 2026-10-21 that repository doesn't
-exist, or isn't public: the GitHub API answers 404.
-
-1. Create `PGYER/pgyer-gradle-plugin` on GitHub as a **public** repository and push `main`.
-2. Check that the CI workflow (`.github/workflows/ci.yml`) passes there. It hasn't run on GitHub yet.
-3. If the repository ends up at another URL, update `website` and `vcsUrl` in `build.gradle.kts`.
+private, or whose README is empty or not in English. The repository is public and its CI workflow
+(`.github/workflows/ci.yml`, Java 17 and 21 with the Android functional tests) passes there. If the
+repository ever moves, update `website` and `vcsUrl` in `build.gradle.kts`.
 
 ## 2. Create the Plugin Portal account
 
